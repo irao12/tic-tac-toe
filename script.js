@@ -43,7 +43,6 @@ const Player = (sign='') => {
     }
 }
 
-
 //Module for the Game Controller
 const GameController = (() => {
     const playButton = document.querySelector('.play-button');
