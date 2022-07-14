@@ -1,0 +1,113 @@
+@font-face {
+    font-family: 'Varela';
+    src: url(./VarelaRound-Regular.ttf);
+}
+
+* {
+    padding: 0;
+    margin: 0;
+
+    font-family: 'Varela', sans-serif;
+}
+
+body {
+    width: 100vw;
+    height: 100vh;
+}
+
+.container {
+    width: 100%;
+    height: 100%;
+
+    font-size: 1.75rem;
+
+    background-color: #def2f1;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 60px;
+}
+
+.title {
+    color: #17252a;
+    font-size: 3rem;
+}
+
+/* play button */
+
+.play-button {
+    padding: 20px 80px;
+    border: none;
+    border-radius: 10px;
+
+    background-color: #2b7a78;
+    color: white;
+
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.play-button:hover {
+    background-color: #40a7a5;
+    color: white;
+}
+
+.play-button:active {
+    background-color: #245c5c;
+}
+
+
+/* board */
+.board {
+    width: min(500px, 75vw);
+    height: min(500px, 75vw);
+
+    border-radius: 10px;
+
+    padding: 20px;
+
+    display: none;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1f);
+
+    gap: 15px;
+}
+
+.square {
+    background-color: #b5c8cf;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    color: #2b3a3a;
+    font-size: 4rem;
+
+    cursor: pointer;
+}
+
+.square:hover {
+    background-color: #c8dbe2;
+}
+
+@media screen and (min-width: 600px) {
+    .square {
+        font-size: 4.5rem;
+    }
+}
+
+/* for making elements appear/disappear */
+
+.active-flex {
+    display: flex;
+}
+
+.active-grid {
+    display: grid;
+}
+
+.inactive {
+    display: none;
+}
