@@ -35,6 +35,7 @@ body {
 .title {
     color: #17252a;
     font-size: 3rem;
+    display: none;
 }
 
 /* game options */
@@ -130,6 +131,12 @@ body {
 
 .square:hover {
     background-color: #c8dbe2;
+}
+
+@media screen and (min-height: 500px){
+    .title {
+        display: block;
+    }
 }
 
 @media screen and (min-width: 600px) and (min-height:600px) {
