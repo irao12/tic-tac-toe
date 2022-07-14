@@ -31,12 +31,6 @@ const GameBoard = (() => {
     };
 })();
 
-//Module for the Game Controller
-const GameController = (() => {
-    const playButton = document.querySelector('.play-button');
-    playButton.addEventListener('click', DisplayController.initBoard);
-})();
-
 //Factory function for the players
 const Player = (sign='') => {
     let _sign = sign;
@@ -48,3 +42,11 @@ const Player = (sign='') => {
         setSign, getSign
     }
 }
+
+
+//Module for the Game Controller
+const GameController = (() => {
+    const playButton = document.querySelector('.play-button');
+    playButton.addEventListener('click', DisplayController.initBoard);
+})();
+
