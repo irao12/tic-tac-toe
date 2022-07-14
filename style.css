@@ -27,7 +27,7 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 60px;
+    gap: 70px;
 }
 
 .title {
@@ -35,18 +35,54 @@ body {
     font-size: 3rem;
 }
 
-/* play button */
+/* game options */
+.choice, .play-button {
+    background-color: #ffffff;
+    color: rgb(0, 0, 0);
+    width: 300px;
+    height: 60px;
 
-.play-button {
-    padding: 20px 80px;
-    border: none;
     border-radius: 10px;
-
-    background-color: #2b7a78;
-    color: white;
 
     font-size: 1.5rem;
     cursor: pointer;
+    
+    text-align: center;
+}
+
+.choices {
+    display: none;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.choice {
+    border: 2px solid black;
+}
+
+.choice:hover {
+    background-color: #dddddd;
+}
+
+.choice:active {
+    background-color: #bbb;
+}
+
+.choice.selected {
+    color: white;
+    background-color: rgb(151, 149, 149);
+}
+
+/* play button */
+
+.play-button {
+    width: 200px;
+    height: 60px;
+    background-color: #2b7a78;
+    color: white;
+    border: none;
+
+    display: none;
 }
 
 .play-button:hover {
@@ -106,6 +142,10 @@ body {
 
 .active-grid {
     display: grid;
+}
+
+.active-block {
+    display: block;
 }
 
 .inactive {

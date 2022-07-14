@@ -1,18 +1,27 @@
 //Module for the Display Controller
 const DisplayController = ( ()=> {
     const playButton = document.querySelector('.play-button');
+    const choiceButtons = document.querySelector('.choices');
+    const playerVsPlayer = document.querySelector('.pvp');
+    const playerVsAI = document.querySelector('.pva');
     const board = document.querySelector('.board');
     
     const _removePlayButton = () => {
-        playButton.classList.add('inactive');
+        playButton.classList.remove('active-block');
         board.classList.add('active-grid');
+    }
+
+    const _removeChoiceButtons = () => {
+        choiceButtons.classList.remove('active-flex');
     }
 
     const initBoard = () => {
        _removePlayButton();
+       _removeChoiceButtons();
     }
 
     return {
+        playButton, choiceButtons, playerVsPlayer, playerVsAI, board,
         initBoard: initBoard
     }
 })();
@@ -45,7 +54,25 @@ const Player = (sign='') => {
 
 //Module for the Game Controller
 const GameController = (() => {
-    const playButton = document.querySelector('.play-button');
-    playButton.addEventListener('click', DisplayController.initBoard);
+
+    //private
+    let _mode = "pvp";
+
+    const _changeMode = (button) => {
+        const selectedMode = button.target.classList.contains('pvp') ? 'pvp' : 'pva';
+        const previousMode = (selectedMode == 'pvp') ? 'pva' : 'pvp'; 
+
+        document.querySelector('.' + previousMode).classList.remove('selected');
+        button.target.classList.add('selected');
+
+        _mode = selectedMode;
+    }
+    //public
+    
+
+    // setup
+    DisplayController.playButton.addEventListener('click', DisplayController.initBoard);
+    DisplayController.playerVsPlayer.addEventListener('click', _changeMode);
+    DisplayController.playerVsAI.addEventListener('click', _changeMode);
 })();
 
