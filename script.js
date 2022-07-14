@@ -24,6 +24,7 @@ const DisplayController = ( ()=> {
     const playerVsPlayer = document.querySelector('.pvp');
     const playerVsAI = document.querySelector('.pva');
     const board = document.querySelector('.board');
+    const announcement = document.querySelector('.announcement');
 
     const squares = document.querySelectorAll('.square');
     
@@ -43,6 +44,10 @@ const DisplayController = ( ()=> {
         });
     }
 
+    const changeAnnouncement = (currentTurn) => {
+        announcement.textContent = 'Player ' + currentTurn.getSign() + '\'s Turn';
+    }
+
     const initBoard = () => {
        _removePlayButton();
        _removeChoiceButtons();
@@ -51,7 +56,8 @@ const DisplayController = ( ()=> {
     return {
         playButton, choiceButtons, playerVsPlayer, playerVsAI, board, squares,
         initBoard: initBoard,
-        refreshBoard: refreshBoard
+        refreshBoard: refreshBoard,
+        changeAnnouncement
     }
 })();
 
@@ -91,13 +97,13 @@ const GameController = (() => {
     }
 
     const _isDone = () => {
-
+         
     }
 
     const _initGame = () => {
         DisplayController.initBoard();
-        const playerOne = Player('x', 'player');
-        const playerTwo = Player('o', (_mode == 'pvp') ? 'player' : 'AI');
+        const playerOne = Player('X', 'player');
+        const playerTwo = Player('O', (_mode == 'pvp') ? 'player' : 'AI');
         _currentTurn = playerOne;
 
         function initMove(e) {
@@ -106,6 +112,7 @@ const GameController = (() => {
                 _currentTurn.makeMove(index);
                 _currentTurn = _currentTurn === playerOne ? playerTwo : playerOne;
                 _isDone();
+                DisplayController.changeAnnouncement(_currentTurn);
             }
         }
 

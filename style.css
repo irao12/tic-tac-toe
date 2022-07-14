@@ -38,6 +38,18 @@ body {
     display: none;
 }
 
+.announcement {
+    display: none;
+    margin-bottom: 0;
+}
+
+.main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
 /* game options */
 .choice, .play-button {
     background-color: #ffffff;
@@ -124,7 +136,7 @@ body {
     align-items: center;
 
     color: #2b3a3a;
-    font-size: 3.5rem;
+    font-size: 3rem;
 
     cursor: pointer;
 }
@@ -134,8 +146,15 @@ body {
 }
 
 @media screen and (min-height: 500px){
-    .title {
+    .announcement {
         display: block;
+        margin-bottom: 40px;
+    }
+}
+
+@media screen and  (min-height:600px) {
+    .title {
+            display: block;
     }
 }
 
@@ -145,7 +164,7 @@ body {
         grid-template-rows: repeat(3, 125px);
     }
     .square {
-        font-size: 4.5rem;
+        font-size: 3.5rem;
     }
 }
 
@@ -156,7 +175,7 @@ body {
     }
 
     .square {
-        font-size: 6rem;
+        font-size: 4.5rem;
     }
 }
 
