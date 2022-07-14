@@ -90,19 +90,29 @@ const GameController = (() => {
         _mode = selectedMode;
     }
 
+    const _isDone = () => {
+
+    }
+
     const _initGame = () => {
         DisplayController.initBoard();
         const playerOne = Player('x', 'player');
         const playerTwo = Player('o', (_mode == 'pvp') ? 'player' : 'AI');
         _currentTurn = playerOne;
 
+        function initMove(e) {
+            const index = e.target.index;
+            if (GameBoard.getSquare(index) == ''){
+                _currentTurn.makeMove(index);
+                _currentTurn = _currentTurn === playerOne ? playerTwo : playerOne;
+                _isDone();
+            }
+        }
+
         const squares = DisplayController.squares;
         for (let i = 0; i < squares.length; i++){
             squares[i].index = i;
-            squares[i].addEventListener('click', (e)=> {
-                _currentTurn.makeMove(e.target.index);
-                _currentTurn = _currentTurn === playerOne ? playerTwo : playerOne;
-            });
+            squares[i].addEventListener('click', initMove);
         }
     }
     
