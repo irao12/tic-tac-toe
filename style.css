@@ -90,7 +90,7 @@ body {
 
 /* play button */
 
-.play-button {
+.play-button{
     width: 200px;
     height: 60px;
     background-color: #2b7a78;
@@ -146,10 +146,11 @@ body {
 }
 
 /* reset button */
-
 .reset-button {
     display: none;
+}
 
+.reset-button, .end-buttons button {
     background-color: #56789e;
     color: white;
     border: none;
@@ -162,9 +163,51 @@ body {
     cursor: pointer;
 }
 
-.reset-button:hover {
+.reset-button:hover, .end-buttons button:hover {
     background-color: #466180;
 }
+
+
+/* end screen */
+
+.end-modal {
+    display: none;
+    justify-content: center;
+    align-items: center;
+
+    background-color: rgba(0, 0, 0, 0.7);
+
+    width: 100vw;
+    height: 100vh;
+
+    position: fixed;
+    top: 0;
+}
+
+.end-tile {
+    width: min(80%, 500px);
+    height: min(75%, 900px);
+
+    background-color: #cee9e7;
+    border-radius: 15px;
+
+    font-size: 2.25rem;
+    word-spacing: 7px;
+
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+}
+
+.end-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* classes to display hidden elements*/
 
 .active-flex {
     display: flex;
@@ -182,9 +225,10 @@ body {
     display: none;
 }
 
+/* media queries */
 
 @media screen and (min-height: 570px) {
-    .announcement {
+    .announcement.active-block {
         display: block;
         margin-bottom: 40px;
     }
@@ -200,6 +244,9 @@ body {
     .reset-button {
         margin-top: 40px;
     }
+    .end-tile {
+        gap: 100px;
+    }
 }
 
 @media screen and (min-width: 680px) and (min-height:680px) {
@@ -210,6 +257,10 @@ body {
 
     .square {
         font-size: 3.5rem;
+    }
+
+    .end-title h2{
+        font-size: 4rem;
     }
 }
 

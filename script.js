@@ -86,13 +86,12 @@ const GameBoard = (() => {
         let horizontal = _hasHorizontal(index, sign);
         let diagonal = _hasDiagonal(sign);
 
-        console.log(vertical, horizontal, diagonal);
         return (vertical || horizontal || diagonal);
     }
 
     const resetBoard = () => {
         _boardArray.fill('');
-    }
+    }   
 
     return {
         setSquare, getSquare, isFull, hasWin, resetBoard
@@ -108,17 +107,12 @@ const DisplayController = ( ()=> {
     const board = document.querySelector('.board');
     const announcement = document.querySelector('.announcement');
     const resetButton = document.querySelector('.reset-button');
+    const endModal = document.querySelector('.end-modal');
+    const endTile = document.querySelector('.end-tile');
+    const replayButton = document.querySelector('.replay-button');
+    const mainMenuButton = document.querySelector('.main-menu-button');
 
     const squares = document.querySelectorAll('.square');
-    
-    const _removePlayButton = () => {
-        playButton.classList.remove('active-block');
-        board.classList.add('active-grid');
-    }
-
-    const _removeChoiceButtons = () => {
-        choiceButtons.classList.remove('active-flex');
-    }
 
     const refreshBoard = () => {
         squares.forEach((square)=>{
@@ -132,16 +126,50 @@ const DisplayController = ( ()=> {
     }
 
     const initBoard = () => {
-       _removePlayButton();
-       _removeChoiceButtons();
+       board.classList.add('active-grid');
        resetButton.classList.add('active-block');
+       announcement.classList.add('active-block');
+    }
+
+    const removeBoard = () => {
+        board.classList.remove('active-grid');
+        resetButton.classList.remove('active-block');
+        announcement.classList.remove('active-block');
+    }
+
+    const initMenu = () => {
+        playButton.classList.add('active-block');
+        choiceButtons.classList.add('active-flex');   
+    }
+
+    const removeMenu = () => {
+        playButton.classList.remove('active-block');
+        choiceButtons.classList.remove('active-flex');
+    }
+
+    const showEndScreen = (text) => {
+        endTile.firstChild.textContent = text;
+        endModal.classList.add('active-flex');
+        endTile.classList.add('active-flex');
+
+        replayButton.classList.add('active-block');
+        mainMenuButton.classList.add('active-block');
+    }    
+
+    const removeEndScreen = () => {
+        endModal.classList.remove('active-flex');
+        endTile.classList.remove('active-flex');
     }
 
     return {
-        playButton, choiceButtons, playerVsPlayer, playerVsAI, board, squares, resetButton,
-        initBoard: initBoard,
-        refreshBoard: refreshBoard,
-        changeTurnAnnouncement
+        playButton, choiceButtons, playerVsPlayer, playerVsAI, 
+        board, squares, resetButton, endModal, replayButton, mainMenuButton,
+        initBoard, removeBoard,
+        refreshBoard,
+        changeTurnAnnouncement,
+        showEndScreen,
+        removeEndScreen,
+        initMenu, removeMenu
     }
 })();
 
@@ -170,6 +198,9 @@ const GameController = (() => {
     let _mode = "pvp";
     let _currentTurn;
 
+    const playerOne = Player('X', 'player');
+    const playerTwo = Player('O', (_mode == 'pvp') ? 'player' : 'AI');
+
     const _changeMode = (button) => {
         const selectedMode = button.target.classList.contains('pvp') ? 'pvp' : 'pva';
         const previousMode = (selectedMode == 'pvp') ? 'pva' : 'pvp'; 
@@ -191,50 +222,64 @@ const GameController = (() => {
         return "";
     }
 
-    const _initGame = () => {
-        DisplayController.initBoard();
-       
-        const playerOne = Player('X', 'player');
-        const playerTwo = Player('O', (_mode == 'pvp') ? 'player' : 'AI');
-        // X always goes first
-        _currentTurn = playerOne;
+    const _initMove = (e) => {
+        const index = e.target.index;
 
-        function initMove(e) {
-            const index = e.target.index;
+        // if square is empty, make the move, otherwise, ignore
+        if (GameBoard.getSquare(index) == ''){
+            _currentTurn.makeMove(index);
 
-            // if square is empty, make the move, otherwise, ignore
-            if (GameBoard.getSquare(index) == ''){
-                _currentTurn.makeMove(index);
-
-                if (_isDone(index) == 'won'){
-                    console.log(_currentTurn.getSign() + ' won')
-                }
-
+            const result = _isDone(index);
+            if (result == 'won'){
+                DisplayController.showEndScreen('Player  ' + _currentTurn.getSign() + '  Won');
+            }
+            else if (result == 'tie'){
+                DisplayController.showEndScreen('It\'s  a  Tie!');
+            }
+            else {
                 _currentTurn = _currentTurn === playerOne ? playerTwo : playerOne;
                 DisplayController.changeTurnAnnouncement(_currentTurn);
             }
         }
+    }
 
-        function _resetGame () {
-            GameBoard.resetBoard();
-            _currentTurn = playerOne;
-            DisplayController.refreshBoard();
-            DisplayController.changeTurnAnnouncement(_currentTurn);
-        }
-
-        const squares = DisplayController.squares;
-        for (let i = 0; i < squares.length; i++){
-            squares[i].index = i;
-            squares[i].addEventListener('click', initMove);
-        }
-
+    const _resetGame = () => {
+        GameBoard.resetBoard();
+        _currentTurn = playerOne;
+        DisplayController.refreshBoard();
         DisplayController.changeTurnAnnouncement(_currentTurn);
+    }
+
+    const _replayGame = () => {
+        DisplayController.endModal.classList.remove('active-flex');
+        _resetGame();
+    }
+
+    const _returnToMenu = () => {
+        DisplayController.removeEndScreen();
+        DisplayController.removeBoard();
+        DisplayController.initMenu();
+    }
+
+    const _initGame = () => {
+        DisplayController.removeMenu();
+        DisplayController.initBoard();
+        
+        // X always goes first
+        _resetGame();
         DisplayController.resetButton.addEventListener('click', _resetGame);
     }
 
     // setup
+    const squares = DisplayController.squares;
+        for (let i = 0; i < squares.length; i++){
+            squares[i].index = i;
+            squares[i].addEventListener('click', _initMove);
+    }
     DisplayController.playButton.addEventListener('click', _initGame);
     DisplayController.playerVsPlayer.addEventListener('click', _changeMode);
     DisplayController.playerVsAI.addEventListener('click', _changeMode);
+    DisplayController.replayButton.addEventListener('click', _replayGame);
+    DisplayController.mainMenuButton.addEventListener('click', _returnToMenu)
 
 })();
