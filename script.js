@@ -72,6 +72,17 @@ const GameBoard = (() => {
         return _boardArray[index];
     }
 
+    const getRandomEmpty = () => {
+        const emptySquares = [];
+        for (let i = 0; i < _boardArray.length; i++){
+            if (_boardArray[i] == '') {
+                emptySquares.push(i);
+            }
+        }
+        const randomIndex = Math.floor(Math.random() * emptySquares.length);
+        return emptySquares[randomIndex];
+    }
+
     const isFull = () => {
         for (let i = 0; i < _boardArray.length; i++){
             if (_boardArray[i] == ''){
@@ -94,7 +105,7 @@ const GameBoard = (() => {
     }   
 
     return {
-        setSquare, getSquare, isFull, hasWin, resetBoard
+        setSquare, getSquare, getRandomEmpty, isFull, hasWin, resetBoard
     };
 })();
 
@@ -219,23 +230,38 @@ const GameController = (() => {
         return "";
     }
 
+    const _showResult = (result) => {
+        if (result == 'won'){
+             DisplayController.showEndScreen('Player  ' + _currentTurn.getSign() + '  Won');
+        }
+        else if (result == 'tie'){
+            DisplayController.showEndScreen('It\'s  a  Tie!');
+        }
+    }
+
     const _initMove = (e) => {
         const index = e.target.index;
 
         // if square is empty, make the move, otherwise, ignore
         if (GameBoard.getSquare(index) == ''){
             _currentTurn.makeMove(index);
-
-            const result = _isDone(index);
-            if (result == 'won'){
-                DisplayController.showEndScreen('Player  ' + _currentTurn.getSign() + '  Won');
-            }
-            else if (result == 'tie'){
-                DisplayController.showEndScreen('It\'s  a  Tie!');
+            let result = _isDone(index);
+            if (result){
+                _showResult(result);
             }
             else {
-                _currentTurn = _currentTurn === playerOne ? playerTwo : playerOne;
-                DisplayController.changeTurnAnnouncement(_currentTurn);
+                if (_mode == 'pva') {
+                    const randomIndex = GameBoard.getRandomEmpty();
+                    _currentTurn = playerTwo;
+                    playerTwo.makeMove(randomIndex);
+                    result = _isDone(index);
+                    if (result) _showResult(result);
+                    _currentTurn = playerOne;
+                }
+                else{
+                    _currentTurn = _currentTurn === playerOne ? playerTwo : playerOne;
+                    DisplayController.changeTurnAnnouncement(_currentTurn);
+                }
             }
         }
     }
