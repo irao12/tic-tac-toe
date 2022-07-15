@@ -254,7 +254,8 @@ const GameController = (() => {
                     const randomIndex = GameBoard.getRandomEmpty();
                     _currentTurn = playerTwo;
                     playerTwo.makeMove(randomIndex);
-                    result = _isDone(index);
+                    result = _isDone(randomIndex);
+                    console.log(result);
                     if (result) _showResult(result);
                     _currentTurn = playerOne;
                 }
