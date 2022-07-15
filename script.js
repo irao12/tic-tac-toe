@@ -151,9 +151,6 @@ const DisplayController = ( ()=> {
         endTile.firstChild.textContent = text;
         endModal.classList.add('active-flex');
         endTile.classList.add('active-flex');
-
-        replayButton.classList.add('active-block');
-        mainMenuButton.classList.add('active-block');
     }    
 
     const removeEndScreen = () => {
