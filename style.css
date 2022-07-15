@@ -145,41 +145,26 @@ body {
     background-color: #c8dbe2;
 }
 
-@media screen and (min-height: 500px){
-    .announcement {
-        display: block;
-        margin-bottom: 40px;
-    }
+/* reset button */
+
+.reset-button {
+    display: none;
+
+    background-color: #56789e;
+    color: white;
+    border: none;
+    width: 200px;
+    height: 60px;
+    border-radius: 8px;
+    font-size: 1.5rem;
+    margin-top: 10px;
+
+    cursor: pointer;
 }
 
-@media screen and  (min-height:600px) {
-    .title {
-            display: block;
-    }
+.reset-button:hover {
+    background-color: #466180;
 }
-
-@media screen and (min-width: 600px) and (min-height:600px) {
-    .board {
-        grid-template-columns: repeat(3, 125px);
-        grid-template-rows: repeat(3, 125px);
-    }
-    .square {
-        font-size: 3.5rem;
-    }
-}
-
-@media screen and (min-width: 900px) and (min-height:900px){
-    .board {
-        grid-template-columns: repeat(3, 175px);
-        grid-template-rows: repeat(3, 175px);
-    }
-
-    .square {
-        font-size: 4.5rem;
-    }
-}
-
-/* for making elements appear/disappear */
 
 .active-flex {
     display: flex;
@@ -196,3 +181,47 @@ body {
 .inactive {
     display: none;
 }
+
+
+@media screen and (min-height: 570px) {
+    .announcement {
+        display: block;
+        margin-bottom: 40px;
+    }
+    .reset-button {
+        margin-top: 20px;
+    }
+}
+
+@media screen and (min-height:680px) {
+    .title {
+        display: block;
+    }
+    .reset-button {
+        margin-top: 40px;
+    }
+}
+
+@media screen and (min-width: 680px) and (min-height:680px) {
+    .board {
+        grid-template-columns: repeat(3, 125px);
+        grid-template-rows: repeat(3, 125px);
+    }
+
+    .square {
+        font-size: 3.5rem;
+    }
+}
+
+@media screen and (min-width: 900px) and (min-height:900px) {
+    .board {
+        grid-template-columns: repeat(3, 175px);
+        grid-template-rows: repeat(3, 175px);
+    }
+
+    .square {
+        font-size: 4.5rem;
+    }
+}
+
+
