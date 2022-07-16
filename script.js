@@ -122,6 +122,7 @@ const DisplayController = ( ()=> {
     const endTile = document.querySelector('.end-tile');
     const replayButton = document.querySelector('.replay-button');
     const mainMenuButton = document.querySelector('.main-menu-button');
+    const menuFixed = document.querySelector('.menu-fixed');
 
     const squares = document.querySelectorAll('.square');
 
@@ -140,15 +141,18 @@ const DisplayController = ( ()=> {
        board.classList.add('active-grid');
        resetButton.classList.add('active-block');
        announcement.classList.add('active-block');
+       menuFixed.classList.add('active-block');
     }
 
     const removeBoard = () => {
         board.classList.remove('active-grid');
         resetButton.classList.remove('active-block');
         announcement.classList.remove('active-block');
+        menuFixed.classList.remove('active-block');
     }
 
     const initMenu = () => {
+        
         playButton.classList.add('active-block');
         choiceButtons.classList.add('active-flex');   
     }
@@ -171,7 +175,7 @@ const DisplayController = ( ()=> {
 
     return {
         playButton, choiceButtons, playerVsPlayer, playerVsAI, 
-        board, squares, resetButton, endModal, replayButton, mainMenuButton,
+        board, squares, resetButton, endModal, replayButton, mainMenuButton, menuFixed,
         initBoard, removeBoard,
         refreshBoard,
         changeTurnAnnouncement,
@@ -189,13 +193,15 @@ const Player = (sign='', mode) => {
 
     const setSign = (sign) => {_sign = sign};
     const getSign = () => {return _sign};
+    const getMode = () => {return _mode};
+    const setMode = (mode) => {_mode = mode};
     const makeMove = (index) => {
         GameBoard.setSquare(index, _sign);
         DisplayController.refreshBoard();
     };
 
     return {
-        setSign, getSign, makeMove
+        setSign, getSign, makeMove, getMode, setMode
     }
 }
 
@@ -207,7 +213,7 @@ const GameController = (() => {
     let _currentTurn;
 
     const playerOne = Player('X', 'player');
-    const playerTwo = Player('O', (_mode == 'pvp') ? 'player' : 'AI');
+    const playerTwo = Player('O', 'player');
 
     const _changeMode = (button) => {
         const selectedMode = button.target.classList.contains('pvp') ? 'pvp' : 'pva';
@@ -232,7 +238,15 @@ const GameController = (() => {
 
     const _showResult = (result) => {
         if (result == 'won'){
-             DisplayController.showEndScreen('Player  ' + _currentTurn.getSign() + '  Won');
+            console.log(_currentTurn.getMode());
+            if (_currentTurn.getMode() == 'AI')
+                DisplayController.showEndScreen('The AI Won');
+            else
+                if (playerTwo.getMode() == 'AI'){
+                    DisplayController.showEndScreen('You Won!')
+                }
+                else 
+                    DisplayController.showEndScreen('Player  ' + _currentTurn.getSign() + '  Won');
         }
         else if (result == 'tie'){
             DisplayController.showEndScreen('It\'s  a  Tie!');
@@ -257,7 +271,7 @@ const GameController = (() => {
                     result = _isDone(randomIndex);
                     console.log(result);
                     if (result) _showResult(result);
-                    _currentTurn = playerOne;
+                    else _currentTurn = playerOne;
                 }
                 else{
                     _currentTurn = _currentTurn === playerOne ? playerTwo : playerOne;
@@ -289,6 +303,10 @@ const GameController = (() => {
         DisplayController.removeMenu();
         DisplayController.initBoard();
         
+        const selectedButton = document.querySelector('.selected');
+        if (selectedButton.classList.contains('pva')) {
+            playerTwo.setMode('AI');
+        }
         // X always goes first
         _resetGame();
         DisplayController.resetButton.addEventListener('click', _resetGame);
@@ -304,6 +322,7 @@ const GameController = (() => {
     DisplayController.playerVsPlayer.addEventListener('click', _changeMode);
     DisplayController.playerVsAI.addEventListener('click', _changeMode);
     DisplayController.replayButton.addEventListener('click', _replayGame);
-    DisplayController.mainMenuButton.addEventListener('click', _returnToMenu)
+    DisplayController.mainMenuButton.addEventListener('click', _returnToMenu);
+    DisplayController.menuFixed.addEventListener('click', _returnToMenu)
 
 })();
