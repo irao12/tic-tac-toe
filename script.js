@@ -307,6 +307,9 @@ const GameController = (() => {
         if (selectedButton.classList.contains('pva')) {
             playerTwo.setMode('AI');
         }
+        else {
+            playerTwo.setMode('pvp');
+        }
         // X always goes first
         _resetGame();
         DisplayController.resetButton.addEventListener('click', _resetGame);
